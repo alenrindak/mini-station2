@@ -3,8 +3,6 @@
 #define Sensor1 2
 #include <Wire.h>
 #include <BH1750.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
 
 float nilaiSensor = 0;
 
@@ -44,14 +42,7 @@ void loop() {
   }
   nilaiSensor = nilaiSensor/100.0;
 
-  if(nilaiSensor >= 512) {
-    digitalWrite(A0, HIGH);
-  }
-  else {
-    digitalWrite(A0, LOW);
-  }
-  delay(30);
-  }
+
 
   readSensor();
   if(S1 == 1)
@@ -67,15 +58,16 @@ void loop() {
   unsigned int lux = sensor.readLightLevel();
  Serial.println("Lumi metior");
 
-  if(lux > 500){
+ if(nilaiSensor >= 512 && lux > 500) {
     Serial.println("Serenum");
     Serial.println(lux);
-  } else if(lux > 250){
-      Serial.println("Nubilum");
+} else if(nilaiSensor >= 512 && lux > 250) { 
+  Serial.println("Nubilum");
       Serial.println(lux);
-  }   else if(lux > 100){
-        Serial.println("Pluvia");
-        Serial.println(lux);
-  }
+}else if(nilaiSensor <= 512 && lux > 100) {
+  Serial.println("Pluvia");
+  Serial.println(lux);
+}
+
 
    }
