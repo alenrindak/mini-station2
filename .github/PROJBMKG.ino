@@ -5,6 +5,13 @@
 #include <Adafruit_SSD1306.h>
 #define POMPA_AIR A5
 #define SENSOR A0
+#include <DHT.h> 
+#define DHTPIN 2 
+#define DHTTYPE DHT11
+DHT dht(DHTPIN, DHTTYPE);
+
+float humi, temp; 
+
 
 BH1750 sensor;
 
@@ -19,6 +26,8 @@ void setup() {
   pinMode(Sensor1, INPUT);
   pinMode(POMPA_AIR, OUTPUT);
 pinMode(SENSOR, INPUT);
+  Serial.begin(9600);
+  delay(10);
 
 }
 
@@ -57,9 +66,24 @@ void loop() {
  }   else if (nilaiSensor <= 512 && lux > 100){
     Serial.println("Pluvia");
     Serial.println(lux);
+   humi = dht.readHumidity();//baca kelembaban
+  temp = dht.readTemperature(); //baca suhu
+  if (isnan(humi) || isnan(temp)) {//jika tidak ada hasil
+    Serial.println("DHT11 tidak terbaca!!");
+    return;
     }
+  else{//jika ada hasilnya
+    Serial.print("Suhu="); //kirim serial "suhu"
+    Serial.print(temp);    //kirim serial nilai suhu
+    Serial.println("C");  //kirim serial "C" Celcius
+    Serial.print("Humi="); //kirim serial "Humi"
+    Serial.print(humi); //kirim serial nilai kelembaban
+    Serial.println("%RH"); //kirim serial "%RH"
   }
-} 
+  delay(1000); //tunda 1 detik untuk pembacaan selanjutnya
+}
+    }
+
  
   
     
