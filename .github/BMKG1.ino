@@ -3,6 +3,18 @@
 #define Sensor1 2
 #include <Wire.h>
 #include <BH1750.h>
+#include <DHT.h> 
+#define DHTPIN 2 
+#define DHTTYPE DHT11 
+DHT dht(DHTPIN, DHTTYPE); 
+
+float humi, temp;
+
+void setup()
+{
+  Serial.begin(9600);
+  delay(10);
+}
 
 float nilaiSensor = 0;
 
@@ -19,6 +31,9 @@ void setup(){
   pinMode(SENSOR, INPUT);
   Serial.begin(9600);
   pinMode(Sensor1, INPUT);
+  {
+  Serial.begin(9600);
+  delay(10);
   
 }
 
@@ -69,5 +84,22 @@ void loop() {
   Serial.println(lux);
 }
 
+  {
+  humi = dht.readHumidity();//baca kelembaban
+  temp = dht. readTemperature();//baca suhu
+  if(isnan(humi) || isnan(temp)) {//jika tidak ada hasil
+    Serial.println("DHT11 tidak terbaca...!")
+    return;
+  }
+else{//jika ada hasilnya
+  Serial.print("Suhu"); //kirim serial "Suhu"
+  Serial.print(temp);  //kirim serial nilai suhu
+  Serial.println("C"); //kirim serial "C" Celcius
+  Serial.print("Humi="); //kirim serial "Humi"
+  Serial.print(humi); //kirim serial nilai kelembaban
+  Serial.println("%RH"); //kirim serial "%RH"
+}
+delay(1000); //tunda 1 detik untuk pembacaan berikutnya
+}
 
    }
