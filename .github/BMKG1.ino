@@ -7,6 +7,8 @@
 #define DHTPIN 2 
 #define DHTTYPE DHT11 
 DHT dht(DHTPIN, DHTTYPE); 
+#define BUZZER 3
+#define SENSOR A5
 
 float humi, temp;
 
@@ -43,6 +45,10 @@ void readSensor()
   Serial.begin (9600);
     Serial.println(F("Allocation failed"));
     for(;;);  //Don't proceed, loop forever
+
+  pinMode(BUZZER, OUTPUT);
+  pinMode(SENSOR, INPUT);
+  digitalWrite(BUZZER, LOW);
     
 }
 
@@ -102,4 +108,14 @@ else{//jika ada hasilnya
 delay(1000); //tunda 1 detik untuk pembacaan berikutnya
 }
 
+  if(digitalRead(SENSOR) == HIGH) {
+    digitalWrite(BUZZER, HIGH);
+    delay(100);
+    digitalWrite(BUZZER, LOW);
+    delay(100);
+    digitalWrite(BUZZER, HIGH);
+    delay(100);
+    digitalWrite(BUZZER, LOW);
+    delay(100);
+  }
    }
