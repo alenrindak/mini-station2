@@ -8,6 +8,9 @@
 #include <DHT.h> 
 #define DHTPIN 2 
 #define DHTTYPE DHT11
+#define LED 2
+#define BUZZER 3
+#define SENSOR A5
 DHT dht(DHTPIN, DHTTYPE);
 
 float humi, temp; 
@@ -28,6 +31,11 @@ void setup() {
 pinMode(SENSOR, INPUT);
   Serial.begin(9600);
   delay(10);
+  pinMode (LED, OUTPUT);
+  pinMode(BUZZER, OUTPUT);
+  pinMode (SENSOR, INPUT);
+  digitalWrite(LED, LOW);
+  digitalWrite(BUZZER, LOW);
 
 }
 
@@ -79,6 +87,19 @@ void loop() {
     Serial.print("Humi="); //kirim serial "Humi"
     Serial.print(humi); //kirim serial nilai kelembaban
     Serial.println("%RH"); //kirim serial "%RH"
+     if(digitalRead(SENSOR) == HIGH){
+  digitalWrite(LED, HIGH);
+  digitalWrite(BUZZER, HIGH);
+  delay(250);
+  digitalWrite(LED, LOW);
+  digitalWrite(BUZZER,LOW);
+  delay(250);
+  digitalWrite(LED, HIGH);
+  digitalWrite(BUZZER, HIGH);
+  delay(250);
+  digitalWrite(LED, LOW);
+  digitalWrite(BUZZER, LOW);
+  delay(250);
   }
   delay(1000); //tunda 1 detik untuk pembacaan selanjutnya
 }
